@@ -1,0 +1,39 @@
+<script src="https://npmcdn.com/vue/dist/vue.js"></script>
+
+<div id="exercise">
+  <!-- 1) Show an alert when the Button gets clicked -->
+  <div>
+    <button v-on:click="showClick">Show Alert</button>
+  </div>
+  <!-- 2) Listen to the "keydown" event and store the value in a data property (hint: event.target.value gives you the value) -->
+  <div>
+    <input v-on:keydown="storeKeyPressed" type="text" />
+    <p>{{ keyPressed }}</p>
+  </div>
+  <!-- 3) Adjust the example from 2) to only fire if the "key down" is the ENTER key -->
+  <div>
+    <input v-on:keydown.down="storeKeyPressed2" type="text" />
+    <p>{{ keyPressed2 }}</p>
+  </div>
+</div>
+
+<script>
+  new Vue({
+    el: "#exercise",
+    data: {
+      keyPressed: "[key pressed]",
+      keyPressed2: "Down Key Pressed",
+    },
+    methods: {
+      showClick: function () {
+        alert("Button clicked");
+      },
+      storeKeyPressed() {
+        this.keyPressed = event.target.value;
+      },
+      storeKeyPressed2() {
+        this.keyPressed2 += "+";
+      },
+    },
+  });
+</script>

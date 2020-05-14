@@ -1,0 +1,10 @@
+<html>
+<body>
+<h1>Messages</h1>
+<ul>
+    {% for x in msgobjects %}
+        <li>Username: {{x.username}} Message: {{x.message}}</li>
+    {% endfor %}
+</ul>
+</body>
+</html>
