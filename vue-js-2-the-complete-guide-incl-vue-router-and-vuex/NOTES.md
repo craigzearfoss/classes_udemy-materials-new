@@ -536,7 +536,7 @@ new Vue({
 <div v-for="(ingredient, i) in ingredients" :key="ingredient">{{ ingredient }})</div>
 ```
 
-# Section 4: Understanding the VueJS Instance
+# Section 5: Understanding the VueJS Instance
 - You can have multiple Vue instances on a page as long as there is no connection between them.
 - Note that we can store a Vue instance in a variable.
   - You can use the variable name to access one Vue instance from another Vue instance or anywhere else in the JavaScript.
@@ -695,6 +695,7 @@ sudo npm install -g vue-cli
   - Run *npm run dev* to start the development server.
     - It will automatically recompile and reload the server any time a file is changed.
 ```
+npm install -g @vue/cli-init
 vue init webpack-simple vue-cli
 cd vue-cli
 npm install
@@ -739,3 +740,123 @@ new Vue({
   - **\<script>**
   - **\<style>** - you can omit this
 - **.vue** files act like a Vue instance.
+- Wrap all of your template code inside of one element.
+
+# Section 7: An Introduction to Components
+- A component basically extends a Vue instance. I is reusable.
+- Make sure your component name is unique so it doesn't interfere with any package or any other HTML elements.
+- The second argument is the object which represents our component. (Generally the same object you pass into a Vue instance.)
+  - Note that instead of "data" holding a properties object it contains a function.
+    - This is because it would interfere with other data properties.
+```
+Vue.component('my-cmp', {
+    data: function() {
+        return {
+            status: 'Critical'
+        }
+    },
+    template: '<p>Server Status: {{ status }}</p>',
+    methods: {
+        changeStatus: function() {
+            this.status = 'Normal';
+        }
+    }
+});
+
+// Note that if just specified "data" as an object of properties as shown below 
+// you would get an error because it would interfere with other data properties.
+Vue.component('my-cmp', {
+    data: {
+        status: 'Critical'
+    },
+    template: '<p>Server Status: {{ status }}</p>'
+});
+
+```
+
+### Registering Components Locally and Globally
+- **Vue.component()** registers the component globally.
+```
+var cmp = {
+    data: function() {
+        return {
+            status: 'Critical'
+        }
+    },
+    template: '<p>Server Status: {{ status }}</p>',
+    methods: {
+        changeStatus: function() {
+            this.status = 'Normal';
+        }
+    }
+};
+- To register a component locally.
+new Vue({
+    el: '#app',
+    components: {
+        'my-cmp' cmp
+    }
+})
+```
+
+### Folder Structure
+- For smaller projects you can create a */components* folder and put you component files in their.
+- For larger projects you may want to organize them by feature.
+```
+Example 1:
+----------
+. main.js
+.... components/
+........ shared/
+........ feature1/
+........ feature2/
+
+Example 2:
+----------
+. main.js
+. users/
+.... account/
+.... analytics/
+. shop
+.... main/
+.... checkout/
+``` 
+
+### Component Tag Naming
+- Component are case-sensitive because they are compiled by JavaScript before they are placed in the DOM. 
+- Vue.js automatically gives you access to the hypenated version of your selector.
+  - So the property "appHeader" can be accessed as the tag "\<app-header>'.
+- It is common to use dashes. 
+- For ES6 you do not need to specify a property and it will automatically generate a key-value pair so the following to examples are the same
+```
+// Example 1
+export default {
+    components: {
+        Servers
+    }
+}
+
+// Example 2 (The same result as Example 1)
+export default {
+    components: {
+        Servers: Servers
+    }
+}
+```
+- **WARNING**: Always try to make sure that your selectors are unique.
+
+### Component Styling
+- By default any style you sepcify in a component is scoped globally.
+- If you want the styles to only apply to the component you need to specify the **scoped** style attribute.
+- Behind the scenes this emulates the behavior of the shadow DOM.
+- When a page is rendered the styles are pulled up to the \<head> of the document.
+  - For scoped styles Vue.js adds *v-data...* tags to elements in the components and they are always added to the styles in the \<head> of the page.
+```
+<style scoped>
+    div {
+        border: 1px solid red;
+    }
+</style>
+```
+
+# Section 8: Communicating Between Components
