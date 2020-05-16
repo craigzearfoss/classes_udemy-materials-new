@@ -243,6 +243,7 @@ Person.propTypes = {
 
 ## Forms 
 ### Controlled Inputs
+- There are values in state that reflect the form values.
 ```
 class Form extends Component {
   state = {
