@@ -1026,3 +1026,55 @@ import { eventBus, eventBus } from "../main";
 ...
 </script>
 ```
+
+# Section 98: Advanced Component Usage
+
+### Slots
+- Reserved for content being passed from outside.
+- \*<slot> is a reserved component keyword.
+- The styles and Vue data and operations will be from the parent component.
+  - Note that in earlier versions of Vue child component styling was applied to the \*<slot>. Now the parent styles are applied, but the child styles can override them.
+- **Named Slots**
+  - Unnamed slots are treated as default slots.
+```
+// parent component
+<template>
+  <div class="container">
+      <app-quote>
+        <h2 slot="title">The Quote</h2>
+        <p slot="content">A wonderful quote!</p>
+      </app-quote>
+  </div>
+</template>
+
+// child component
+<template>
+  <div>
+    <div class="title">
+      <slot name="title"></slot>
+    </div>
+    <hr />
+    <div>
+      <slot name="content"></slot>
+    </div>
+  </div>
+</template>
+
+```
+
+### Dynamic Components
+- The \*<component> selector let's us dynamically add components.
+- Can be used to dynamically replace parts of a template with different components.
+```
+<component :is="selectedComponent"></component>
+```
+- The component is created and destroyed when it is loaded/unloaded.
+- You can keep dynamic compoents alive in the *\<keep-alive>* element.
+```
+<keep-alive>
+    <component :is="selectedComponent"></component>
+</keep-alive>
+```
+- Dynamic Component lifecyle hooks:
+  - **deactivated**
+  - **activated**
