@@ -860,3 +860,169 @@ export default {
 ```
 
 # Section 8: Communicating Between Components
+
+### props are used to transfer data from the parent to the child.
+- **props** basically means properties set from outside.
+- If you use case sensitive name attribute make sure that the template you are using supports case sensitivity.
+- You can use the props in the child like any other prop set up in the data object by accessing it with the *this.propname* syntax.
+
+- *User.vue* (Parent):
+```
+<template>
+  <div class="component">
+    <button @click="changeName">Change my Name</button>
+    <hr />
+    <app-user-detail v-bind:name="name"></app-user-detail>
+  </div>
+</template>
+
+<script>
+import UserDetail from "./UserDetail.vue";
+
+export default {
+  data: function() {
+    return {
+      name: "Max"
+    };
+  },
+  methods: {
+    changeName() {
+      this.name = "Anna";
+    }
+  },
+  components: {
+    appUserDetail: UserDetail,
+  }
+};
+</script>
+```
+- *UserDetail.vue* (Child):
+- In props of the child you set the properties that can be set from outside.
+```
+<template>
+  <div class="component">
+    <p>User Name: {{ name }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ["name"]
+};
+</script>
+```
+
+### Validating props
+- You can validate types String, Boolean, Number and Function.
+```
+  props: {
+    name: [String, Array]
+  },
+
+  props: {
+      name: {
+          type: String,
+          required: true
+      }
+  }
+
+  props: {
+      name: {
+          type: String,
+          default: "Some string"
+      }
+  }
+```
+
+### Passing props from child to parent
+- We pass props from the child to the parent via custom events.
+- The **$emit** method can be used to pass custom events to the parent.
+- *UserDetail.vue* (Child):
+```
+<template>
+  <div class="component">
+    <p>User Name: {{ switchName() }}</p>
+    <app-user-detail :name="name" @nameWasReset="name = $event"></app-user-detail>
+  </div>
+</template>
+<script>
+export default {
+  props: {
+    name: [String, Array]
+  },
+  methods: {
+    switchName() {
+      return this.name
+        .split("")
+        .reverse()
+        .join("");
+    },
+    resetName() {
+      this.name = "Max";
+      this.$emit("nameWasReset", this.name);
+    }
+  }
+};
+</script>
+```
+- *User.vue* (Parent):
+```
+<template>
+  <div class="component">
+    <button @click="changeName">Change my Name</button>
+    <app-user-detail :name="name" @nameWasReset="name = $event"></app-user-detail>
+  </div>
+</template>
+
+<script>
+import UserDetail from "./UserDetail.vue";
+
+export default {
+  data: function() {
+    return {
+      name: "Max"
+    };
+  },
+  methods: {
+    changeName() {
+      this.name = "Anna";
+    }
+  },
+  components: {
+    appUserDetail: UserDetail,
+  }
+};
+</script>
+```
+
+### Unidirectional Data Flow from Top to Bottom!
+- A child cannot pass data directly to anothe child.
+  - It must pass the data to the parent which then passes it down to the other child.
+
+### Communitcation between Sibling Components
+1. Child component emits custom event to parent and the other children that are listening to the parent recieve the update.
+2. Use a callback. Set up a function in the parent, set a pointer to it in the child and execute the function. 
+3. **Event Bus** - an object to listen to events an pass on data.
+ - You must set up your event bus before the Vue instance that holds all of you components.
+```
+import Vue from "vue";
+import App from "./App.vue";
+
+export const eventBus = new Vue();
+
+new Vue({
+  el: "#app",
+  render: h => h(App)
+});
+```
+    - Set up a listener in the *create()* lifecycle method. 
+```
+<script>
+import { eventBus, eventBus } from "../main";
+...
+  created() {
+    eventBus.$on();
+  }
+...
+</script>
+```
