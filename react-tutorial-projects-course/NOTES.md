@@ -329,3 +329,15 @@ class Form extends Component {
   }
 }
 ```
+
+# Section 12: React Hooks
+- Introduced in v16.8.0
+- Only use functional components
+- Most common hooks are 
+  - **useState** - allows you to use and set states in functional components (No need to use this.setState().)
+  - **useEffect** - runs a callback function after each render so it allows you to perform a side effect like data fetching and listening   
+  for an event.
+    - Has two parameters:
+      1. A callback function that gets invoked after each render.
+      2. An array that let's React know whether to run the callback function.
+  - **useContext** - preferred method to work with context api instead of using render props.
