@@ -341,3 +341,6 @@ class Form extends Component {
       1. A callback function that gets invoked after each render.
       2. An array that let's React know whether to run the callback function.
   - **useContext** - preferred method to work with context api instead of using render props.
+  - **useRef** - returns an object with the property of "current". 
+    - It holds the value between renders.
+    - It doesn't have the function to change the value.
