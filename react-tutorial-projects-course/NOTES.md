@@ -336,11 +336,45 @@ class Form extends Component {
 - Most common hooks are 
   - **useState** - allows you to use and set states in functional components (No need to use this.setState().)
   - **useEffect** - runs a callback function after each render so it allows you to perform a side effect like data fetching and listening   
-  for an event.
     - Has two parameters:
       1. A callback function that gets invoked after each render.
-      2. An array that let's React know whether to run the callback function.
+         - Returns a cleanup function to avoid memory leaks, so it cannot be async.
+      2. An array values (dependencies) that let's React know whether to run the callback function.
   - **useContext** - preferred method to work with context api instead of using render props.
   - **useRef** - returns an object with the property of "current". 
     - It holds the value between renders.
     - It doesn't have the function to change the value.
+
+## [Strapi](https://strapi.io/)
+- Open-source headless CMS.
+- 100% Javascript, fully customizable and developer-first
+- Set up a server 
+```
+npx create-strapi-app my-project --quickstart
+```
+- Start the server
+```
+npm run develop
+```
+- Stop the server
+```
+Ctrl-C
+```
+
+## [Cloudinary with Strapi](https://www.npmjs.com/package/strapi-provider-upload-cloudinary)
+- Change into your strapi directory
+```
+cd extensions
+npm i strapi-provider-upload-cloudinary
+```
+- Create the file *./extensions/upload/config/settings.json* with the following contents.
+```
+{
+  "provider": "cloudinary",
+  "providerOptions": {
+    "cloud_name": "YOUR-NAME",
+    "api_key": "YOUR-KEY",
+    "api_secret": "YOUR-SECRET"
+  }
+}
+```
